@@ -15,7 +15,7 @@ _validInputLogin = (request) => {
 }
 
 login = (request, response, next) => {
-    console.log ('users store');
+    console.log ('auth login');
 
     if ( ! _validInputLogin(request)) {
         response.status(401).json(

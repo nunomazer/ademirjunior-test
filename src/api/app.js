@@ -11,7 +11,7 @@ app.get('/', (request, response) => {
 // Não remover esse end-point, ele é necessário para o avaliador
 
 app.use('/', require('./auth/routes'));
-app.use('/users', require('./users/routes'));
+app.use('/', require('./users/routes'));
 
 
 app.get('/teste', (request, response) => {
