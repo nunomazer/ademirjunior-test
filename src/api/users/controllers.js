@@ -1,15 +1,13 @@
 var express = require('express');
-const { requests } = require('sinon');
-var database = require('../database');
-
-const emailRegexp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+var validations = require('../../helpers/validations');
+var User = require('./user');
 
 _validInputStore = (request) => {
     let valid = true;
     
     valid = valid && request.body.name;
     valid = valid && request.body.email;
-    valid = valid && emailRegexp.test(request.body.email);
+    valid = valid && validations.isEmail(request.body.email)
     valid = valid && request.body.password;
 
     return valid;
@@ -27,14 +25,18 @@ store = (request, response, next) => {
         return false;
     }
 
-    response.json(request.body);
-}
+    let user = new User();
+    user.create(
+        request.body.name,
+        request.body.email,
+        request.body.password
+    );
 
-getAll = (request, response, next) => {
-    response.json(request);
+    console.log('User no controller ', user);
+
+    response.status(201).json(user);
 }
 
 module.exports = {
-    store,
-    getAll,
-};
+    store
+}

@@ -1,14 +1,11 @@
 var express = require('express');
-const { requests } = require('sinon');
 var database = require('../database');
-
-const emailRegexp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+var validations = require('../../helpers/validations');
 
 _validInputLogin = (request) => {
     let valid = true;
     
     valid = valid && request.body.email;
-    valid = valid && emailRegexp.test(request.body.email);
     valid = valid && request.body.password;
 
     return valid;
