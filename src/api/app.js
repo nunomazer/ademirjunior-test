@@ -4,15 +4,15 @@ const app = express();
 
 var { db } = require('./database');
 
-var users = require('./users');
-
 // Não remover esse end-point, ele é necessário para o avaliador
 app.get('/', (request, response) => {
   response.send();
 });
 // Não remover esse end-point, ele é necessário para o avaliador
 
-app.use(users);
+app.use('/', require('./auth/routes'));
+app.use('/users', require('./users/routes'));
+
 
 app.get('/teste', (request, response) => {
   db.connect(function(){
