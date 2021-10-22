@@ -32,9 +32,11 @@ store = (request, response, next) => {
         request.body.password
     );
 
+    delete user.password;
+
     console.log('User no controller ', user);
 
-    response.status(201).json(user);
+    response.status(201).json({ "user": user });
 }
 
 module.exports = {
