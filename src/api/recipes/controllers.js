@@ -16,7 +16,7 @@ async function store(request, response) {
         return false;
     }
 
-    recipe.create(request.body.name, request.body.ingredients, request.body.preparation)
+    recipe.create(request.body.name, request.body.ingredients, request.body.preparation, request.userLogged)
     .then(() => {
         response.status(201).json({ recipe });    
     });        
@@ -24,7 +24,6 @@ async function store(request, response) {
 
 async function getOne(request, response) {
     const res = await recipe.findById(request.params.id);
-    console.log('Recipe', res);
 
     if (res == null) {
         response.status(404).json({ message: 'recipe not found' });
@@ -37,12 +36,18 @@ async function getOne(request, response) {
 async function getAll(request, response) {
     let res = await recipe.getAll();
     res = await res.toArray();
-    console.log('Recipes', res);
     response.json(res);
+}
+
+async function update(request, response) {
+    let res = await recipe.update(request.params.id, request.body);
+    const rec = recipe.findById(request.params.id);
+    response.json(await rec);
 }
 
 module.exports = {
     store,
     getAll,
     getOne,
+    update,
 };

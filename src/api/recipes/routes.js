@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.use(express.json());
 router.get('/recipes/:id', controllers.getOne);
+router.put('/recipes/:id', jwt.isValid, controllers.update);
 router.get('/recipes', controllers.getAll);
 router.post('/recipes', jwt.isValid, controllers.store);
 

@@ -1,16 +1,18 @@
 const { ObjectID } = require('mongodb');
 const database = require('../database');
+const { RecipeDto } = require('./recipeDto');
 
-async function create(name, ingredients, preparation) {
+async function create(name, ingredients, preparation, userId) {
     this.name = name;
     this.ingredients = ingredients;
     this.preparation = preparation;
+    this.userId = userId;
 
     const db = await database.connect();
     console.debug('Creating recipe');
     const res = await db.collection('recipes').insertOne(this);
     this._id = res.insertedId;
-    console.log('Recipe created', this);
+    console.log('Recipe created', this._id);
 }
 
 async function getAll() {
@@ -35,8 +37,29 @@ async function findById(id) {
     return res;
 }
 
+async function update(id, data) {
+    console.log('Update recipe');
+    const db = await database.connect();
+    
+    const oId = ObjectID(id);
+
+    const res = await db.collection('recipes').updateOne(
+        { _id: oId },
+        {
+            $set: {
+                name: data.name,
+                ingredients: data.ingredients,
+                preparation: data.preparation,
+            },
+        },
+    );
+    
+    return res;    
+}
+
 module.exports = {
     create,
     findById,
     getAll,
+    update,
 };
