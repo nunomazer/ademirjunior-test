@@ -16,7 +16,7 @@ async function login(email, password) {
         throw Error('Incorrect username or password');
     }
 
-    const token = jwt.sign({ userLogged: res._id }, jwtAuth.secretKey, {
+    const token = jwt.sign({ userLogged: res }, jwtAuth.secretKey, {
         expiresIn: 300,
       });
 
