@@ -18,7 +18,7 @@ async function store(request, response) {
 
     recipe.create(request.body.name, request.body.ingredients, 
         request.body.preparation, request.userLogged._id)
-    .then(rec => {
+    .then((rec) => {
         response.status(201).json({ recipe: rec });    
     });        
 }
@@ -41,21 +41,22 @@ async function getAll(request, response) {
 }
 
 async function update(request, response) {
-    let res = await recipe.update(request.params.id, request.body, request.userLogged);
+    await recipe.update(request.params.id, request.body, request.userLogged);
     const rec = recipe.findById(request.params.id);
     response.json(await rec);
 }
 
 async function remove(request, response) {
-    let res = await recipe.remove(request.params.id, request.userLogged);
+    await recipe.remove(request.params.id, request.userLogged);
     response.status(204).json();
 }
 
 async function updateImageField(request, response) {
-    const port = request.app.port;
     const path = request.headers.host + '/src/uploads';
 
-    let res = await recipe.updateImageField(request.params.id, path, request.file.filename, request.userLogged);
+    await recipe.updateImageField(request.params.id, 
+        path, request.file.filename, request.userLogged);
+        
     const rec = recipe.findById(request.params.id);
     console.log('Updated recipe image', await rec);
     response.json(await rec);

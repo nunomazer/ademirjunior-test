@@ -1,27 +1,6 @@
 const { ObjectID } = require('mongodb');
 const database = require('../database');
 
-async function create(name, ingredients, preparation, userId) {
-    this.name = name;
-    this.ingredients = ingredients;
-    this.preparation = preparation;
-    this.userId = userId;
-
-    const db = await database.connect();
-    console.debug('Creating recipe');
-    const res = await db.collection('recipes').insertOne(this);
-    const rec = await findById(res.insertedId);
-    console.log('Recipe created', await rec._id);
-    return await rec;
-}
-
-async function getAll() {
-    console.log('Geting all recipes');
-    const db = await database.connect();
-    const res = await db.collection('recipes').find({});
-    return res;
-}
-
 async function findById(id) {
     console.log('Find recipe');
     const db = await database.connect();
@@ -37,14 +16,35 @@ async function findById(id) {
     return res;
 }
 
+async function create(name, ingredients, preparation, userId) {
+    this.name = name;
+    this.ingredients = ingredients;
+    this.preparation = preparation;
+    this.userId = userId;
+
+    const db = await database.connect();
+    console.debug('Creating recipe');
+    const res = await db.collection('recipes').insertOne(this);
+    const rec = await findById(res.insertedId);
+    console.log('Recipe created', await rec._id);
+    return rec;
+}
+
+async function getAll() {
+    console.log('Geting all recipes');
+    const db = await database.connect();
+    const res = await db.collection('recipes').find({});
+    return res;
+}
+
 async function isOwnerOrAdmin(id, userLogged) {
     const db = await database.connect();
     const oId = ObjectID(id);
 
-    if (userLogged.role == 'admin') return true;
+    if (userLogged.role === 'admin') return true;
 
     const res = await db.collection('recipes').findOne({ _id: oId });
-    if (await res.userId == userLogged._id) return true;
+    if (await res.userId === userLogged._id) return true;
 
     return false;
 }
@@ -52,7 +52,7 @@ async function isOwnerOrAdmin(id, userLogged) {
 async function update(id, data, userLogged) {
     console.log('Update recipe');
 
-    if (await isOwnerOrAdmin(id, userLogged) == false) {
+    if (await isOwnerOrAdmin(id, userLogged) === false) {
         throw Error('Must be admin or owner');
     }
 
@@ -77,7 +77,7 @@ async function update(id, data, userLogged) {
 async function updateImageField(id, path, fileName, userLogged) {
     console.log('Upload image');
 
-    if (await isOwnerOrAdmin(id, userLogged) == false) {
+    if (await isOwnerOrAdmin(id, userLogged) === false) {
         throw Error('Must be admin or owner');
     }
 
@@ -89,7 +89,7 @@ async function updateImageField(id, path, fileName, userLogged) {
         { _id: oId },
         {
             $set: {
-                image:  path + '/' + fileName,
+                image: path + '/' + fileName,
             },
         },
     );
@@ -100,7 +100,7 @@ async function updateImageField(id, path, fileName, userLogged) {
 async function remove(id, userLogged) {
     console.log('Delete recipe');
 
-    if (await isOwnerOrAdmin(id, userLogged) == false) {
+    if (await isOwnerOrAdmin(id, userLogged) === false) {
         throw Error('Must be admin or owner');
     }
 
@@ -114,7 +114,6 @@ async function remove(id, userLogged) {
     
     return res;    
 }
-
 
 module.exports = {
     create,

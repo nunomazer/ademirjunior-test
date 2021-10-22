@@ -1,8 +1,9 @@
 const express = require('express');
 const path = require('path');
+const multer = require('multer');
 const jwt = require('../auth/jwt');
 const controllers = require('./controllers');
-const multer = require('multer');
+
 const router = express.Router();
 
 const storage = multer.diskStorage({
