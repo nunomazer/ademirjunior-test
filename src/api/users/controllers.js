@@ -34,8 +34,6 @@ store = (request, response, next) => {
 
     delete user.password;
 
-    console.log('User no controller ', user);
-
     response.status(201).json({ "user": user });
 }
 

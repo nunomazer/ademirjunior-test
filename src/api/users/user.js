@@ -14,7 +14,6 @@ class User {
         database.connect((db) => {
             console.debug('Creating user');
             db.collection("users").insertOne(this);
-            console.debug(this);
         });
     }
 }
