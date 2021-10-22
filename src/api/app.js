@@ -11,12 +11,10 @@ app.get('/', (request, response) => {
 app.use('/', require('./auth/routes'));
 app.use('/', require('./users/routes'));
 
-
 app.get('/teste', (request, response) => {
-  db.connect(function(){
+  db.connect(() => {
     console.log('conectado no endpoint teste');
-  },
-  function (){
+  }, () => {
     console.log('erro ao conectar');
   });
   response.send('Funcionando ....');
