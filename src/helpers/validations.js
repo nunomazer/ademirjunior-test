@@ -1,9 +1,9 @@
-isEmail = (email) => {
-    let emailRegexp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+function isEmail(email) {
+    const emailRegexp = /\S+@\S+\.\S+/;
 
     return emailRegexp.test(email);
 }
 
 module.exports = {
-    isEmail
-}
+    isEmail,
+};
