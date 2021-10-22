@@ -13,7 +13,7 @@ class User {
 
         database.connect((db) => {
             console.debug('Creating user');
-            this._id = db.collection("users").insert(this);
+            db.collection("users").insertOne(this);
             console.debug(this);
         });
     }
