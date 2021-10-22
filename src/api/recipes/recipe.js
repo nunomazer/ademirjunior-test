@@ -1,6 +1,5 @@
 const { ObjectID } = require('mongodb');
 const database = require('../database');
-const { RecipeDto } = require('./recipeDto');
 
 async function create(name, ingredients, preparation, userId) {
     this.name = name;
@@ -11,8 +10,9 @@ async function create(name, ingredients, preparation, userId) {
     const db = await database.connect();
     console.debug('Creating recipe');
     const res = await db.collection('recipes').insertOne(this);
-    this._id = res.insertedId;
-    console.log('Recipe created', this._id);
+    const rec = await findById(res.insertedId);
+    console.log('Recipe created', await rec._id);
+    return await rec;
 }
 
 async function getAll() {
@@ -56,6 +56,20 @@ async function update(id, data) {
     
     return res;    
 }
+
+async function remove(id) {
+    console.log('Delete recipe');
+    const db = await database.connect();
+    
+    const oId = ObjectID(id);
+
+    const res = await db.collection('recipes').deleteOne(
+        { _id: oId },
+    );
+    
+    return res;    
+}
+
 
 module.exports = {
     create,
