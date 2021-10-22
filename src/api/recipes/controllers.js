@@ -40,13 +40,13 @@ async function getAll(request, response) {
 }
 
 async function update(request, response) {
-    let res = await recipe.update(request.params.id, request.body);
+    let res = await recipe.update(request.params.id, request.body, request.userLogged);
     const rec = recipe.findById(request.params.id);
     response.json(await rec);
 }
 
 async function remove(request, response) {
-    let res = await recipe.remove(request.params.id);
+    let res = await recipe.remove(request.params.id, request.userLogged);
     response.status(204).json();
 }
 

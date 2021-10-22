@@ -37,8 +37,25 @@ async function findById(id) {
     return res;
 }
 
-async function update(id, data) {
+async function isOwnerOrAdmin(id, userLogged) {
+    const db = await database.connect();
+    const oId = ObjectID(id);
+
+    if (userLogged.role == 'admin') return true;
+
+    const res = await db.collection('recipes').findOne({ _id: oId });
+    if (await res.userId == userLogged._id) return true;
+
+    return false;
+}
+
+async function update(id, data, userLogged) {
     console.log('Update recipe');
+
+    if (await isOwnerOrAdmin(id, userLogged) == false) {
+        throw Error('Must be admin or owner');
+    }
+
     const db = await database.connect();
     
     const oId = ObjectID(id);
@@ -57,8 +74,13 @@ async function update(id, data) {
     return res;    
 }
 
-async function remove(id) {
+async function remove(id, userLogged) {
     console.log('Delete recipe');
+
+    if (await isOwnerOrAdmin(id, userLogged) == false) {
+        throw Error('Must be admin or owner');
+    }
+
     const db = await database.connect();
     
     const oId = ObjectID(id);
