@@ -74,6 +74,29 @@ async function update(id, data, userLogged) {
     return res;    
 }
 
+async function updateImageField(id, path, fileName, userLogged) {
+    console.log('Upload image');
+
+    if (await isOwnerOrAdmin(id, userLogged) == false) {
+        throw Error('Must be admin or owner');
+    }
+
+    const db = await database.connect();
+    
+    const oId = ObjectID(id);
+
+    const res = await db.collection('recipes').updateOne(
+        { _id: oId },
+        {
+            $set: {
+                image:  path + '/' + fileName,
+            },
+        },
+    );
+    
+    return res;    
+}
+
 async function remove(id, userLogged) {
     console.log('Delete recipe');
 
@@ -99,4 +122,5 @@ module.exports = {
     getAll,
     remove,
     update,
+    updateImageField,
 };

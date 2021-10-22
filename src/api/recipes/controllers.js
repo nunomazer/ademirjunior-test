@@ -50,10 +50,21 @@ async function remove(request, response) {
     response.status(204).json();
 }
 
+async function updateImageField(request, response) {
+    const port = request.app.port;
+    const path = request.headers.host + '/src/uploads';
+
+    let res = await recipe.updateImageField(request.params.id, path, request.file.filename, request.userLogged);
+    const rec = recipe.findById(request.params.id);
+    console.log('Updated recipe image', await rec);
+    response.json(await rec);
+}
+
 module.exports = {
     store,
     getAll,
     getOne,
     remove,
     update,
+    updateImageField,
 };
