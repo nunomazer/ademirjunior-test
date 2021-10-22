@@ -10,6 +10,7 @@ app.get('/', (request, response) => {
 
 app.use('/', require('./auth/routes'));
 app.use('/', require('./users/routes'));
+app.use('/', require('./recipes/routes'));
 
 app.get('/teste', (request, response) => {
   db.connect(() => {
