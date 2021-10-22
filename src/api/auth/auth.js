@@ -1,4 +1,5 @@
 const database = require('../database');
+const jwt = require('jsonwebtoken');
 
 async function login(email, password) {
     const db = await database.connect();
@@ -14,7 +15,11 @@ async function login(email, password) {
         throw Error('Incorrect username or password');
     }
 
-    return res;
+    const token = jwt.sign({ res }, 'my-secret-configurar', {
+        expiresIn: 300 // expires in 5min
+      });
+
+    return token;
 }
 
 async function emailExists(email) {

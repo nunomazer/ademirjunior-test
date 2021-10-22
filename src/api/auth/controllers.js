@@ -20,9 +20,9 @@ async function login(request, response) {
     }
 
     try {
-        const user = await auth.login(request.body.email, request.body.password);
-        console.log('Logged', user);
-        response.json(user);
+        const token = await auth.login(request.body.email, request.body.password);
+        console.log('Token', token);
+        response.json({ token });
     } catch (e) {
         response.status(401).json({
             message: e.message,
