@@ -41,8 +41,7 @@ async function storeAdmin(request, response) {
         return response.status(400).json({ message: 'Invalid entries. Try again.' });
     }
 
-    if (request.userLogged.role != 'admin') {
-        console.log('Não é admin');
+    if (request.userLogged.role !== 'admin') {
         return response.status(403).json({ message: 'Only admins can register new admins' });
     }
 
@@ -59,8 +58,7 @@ async function storeAdmin(request, response) {
                 delete user.password;
                 return response.status(201).json({ user });    
             });        
-        })
-        .catch((e) => console.log(e));
+        }).catch((e) => console.log(e));
 }
 
 module.exports = {

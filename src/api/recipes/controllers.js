@@ -16,7 +16,8 @@ async function store(request, response) {
         return false;
     }
 
-    recipe.create(request.body.name, request.body.ingredients, request.body.preparation, request.userLogged._id)
+    recipe.create(request.body.name, request.body.ingredients, 
+        request.body.preparation, request.userLogged._id)
     .then(rec => {
         response.status(201).json({ recipe: rec });    
     });        

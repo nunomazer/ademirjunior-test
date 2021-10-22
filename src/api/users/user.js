@@ -10,6 +10,7 @@ class User {
         const db = await database.connect();
         console.debug('Creating user');
         const res = await db.collection('users').insertOne(this);
+        // eslint-disable-next-line no-underscore-dangle
         this._id = res.insertedId;
     }
 

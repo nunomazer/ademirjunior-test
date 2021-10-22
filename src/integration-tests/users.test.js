@@ -4,7 +4,7 @@ const { expect } = require('chai');
 const mongoDbUrl = 'mongodb://localhost:27017/Cookmaster';
 const url = 'http://localhost:3000';
 
-describe('INT-01. User service', () => {
+describe('User service', () => {
 
     it('Inserir usuário no banco usando o service User', async () => {
         const user = new User();

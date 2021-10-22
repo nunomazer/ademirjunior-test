@@ -1,6 +1,6 @@
 class RecipeDto {
     constructor(data) {
-        this._id = data.id ?? data._id;
+        this._id = data.id ? data.id : data._id;
         this.name = data.name;
         this.ingredients = data.ingredients;
         this.preparation = data.preparation;
