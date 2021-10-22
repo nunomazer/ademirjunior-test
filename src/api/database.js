@@ -6,16 +6,13 @@ const DB_NAME = 'Cookmaster';
 
 let _db;
 
-function connect(callback){
-    MongoClient.connect(MONGO_DB_URL, { 
+async function connect(callback){
+    conn = await MongoClient.connect(MONGO_DB_URL, { 
       useNewUrlParser: true,
       useUnifiedTopology: true 
-    },
-      (err, conn) => {
-        console.debug('Connected');
-        _db = conn.db(DB_NAME);
-        callback(_db);
     });
+
+    return conn.db(DB_NAME);
 }
 
 function getDB(){

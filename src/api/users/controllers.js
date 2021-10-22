@@ -13,28 +13,41 @@ _validInputStore = (request) => {
     return valid;
 }
 
-store = (request, response, next) => {
+async function store(request, response, next) {
     console.log ('users store');
 
     if ( ! _validInputStore(request)) {
-        response.status(400).json(
-            {
+        response.status(400).json({
                 "message": "Invalid entries. Try again."
-            }
-        );
+        });
         return false;
     }
 
     let user = new User();
-    user.create(
-        request.body.name,
-        request.body.email,
-        request.body.password
-    );
 
-    delete user.password;
+    user.emailExists(request.body.email)
+        .then(async (exist) => {
+            console.log('Existe email', exist);
+            if (exist) {
+                response.status(409).json({
+                    "message" : "Email already registered"
+                })
+                return false;
+            }
 
-    response.status(201).json({ "user": user });
+            user.create(
+                request.body.name,
+                request.body.email,
+                request.body.password
+            ).then(() => {
+                delete user.password;
+                console.log(user);
+            
+                response.status(201).json({ "user": user });    
+            });
+        
+        })
+        .catch((e) => console.log(e));
 }
 
 module.exports = {
