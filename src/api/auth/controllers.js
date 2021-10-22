@@ -21,7 +21,6 @@ async function login(request, response) {
 
     try {
         const token = await auth.login(request.body.email, request.body.password);
-        console.log('Token', token);
         response.json({ token });
     } catch (e) {
         response.status(401).json({
