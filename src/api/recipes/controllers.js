@@ -45,9 +45,15 @@ async function update(request, response) {
     response.json(await rec);
 }
 
+async function remove(request, response) {
+    let res = await recipe.remove(request.params.id);
+    response.status(204).json();
+}
+
 module.exports = {
     store,
     getAll,
     getOne,
+    remove,
     update,
 };

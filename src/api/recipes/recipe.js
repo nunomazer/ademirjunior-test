@@ -75,5 +75,6 @@ module.exports = {
     create,
     findById,
     getAll,
+    remove,
     update,
 };
