@@ -13,6 +13,18 @@ class User {
         this._id = res.insertedId;
     }
 
+    async createAdmin(name, email, password) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.role = 'admin';
+
+        const db = await database.connect();
+        console.debug('Creating user admin');
+        const res = await db.collection('users').insertOne(this);
+        this._id = res.insertedId;
+    }
+
     async emailExists(email) {
         const db = await database.connect();
         const count = await db.collection('users').countDocuments({ email });

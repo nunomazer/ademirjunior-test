@@ -36,6 +36,34 @@ async function store(request, response) {
         .catch((e) => console.log(e));
 }
 
+async function storeAdmin(request, response) {
+    if (!validInputStore(request)) {
+        return response.status(400).json({ message: 'Invalid entries. Try again.' });
+    }
+
+    if (request.userLogged.role != 'admin') {
+        console.log('Não é admin');
+        return response.status(403).json({ message: 'Only admins can register new admins' });
+    }
+
+    const user = new User();
+
+    user.emailExists(request.body.email)
+        .then(async (exist) => {
+            if (exist) {
+                return response.status(409).json({ message: 'Email already registered' });
+            }
+
+            user.createAdmin(request.body.name, request.body.email, request.body.password)
+            .then(() => {
+                delete user.password;
+                return response.status(201).json({ user });    
+            });        
+        })
+        .catch((e) => console.log(e));
+}
+
 module.exports = {
     store,
+    storeAdmin,
 };
